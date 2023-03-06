@@ -81,8 +81,8 @@ def find_the_largest_number(number_1: int, number_2: int) -> int:
 
 
 
-number_1 = 8
-number_2 = - 3
+number_1 = 3
+number_2 = - 5
 
 print()
 print(" max(" + str(number_1) + "," + str(number_2) + ") =",find_the_largest_number(number_1, number_2))
