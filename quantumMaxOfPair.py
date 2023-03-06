@@ -5,8 +5,9 @@ from qiskit.providers.aer import QasmSimulator                                  
 
 def find_the_largest_number(number_1: int, number_2: int) -> int:
 
-    sign_1 = number_1 >> 31                                                         # 0 if positive, - 1 if negative
-    sign_2 = number_2 >> 31                                                         #
+    sign_1 = number_1 >> (32 - 1)                                                   # 0 if positive, - 1 if negative
+    sign_2 = number_2 >> (32 - 1)                                                   # note: this works Python's (signed) 'int' type
+                                                                                    # for other signed integer types 32 needs to be replaced by the appropriate power
 
     a = number_1                                                                    # dummy variables to use for computing the classical bits
     b = number_2                                                                    #
