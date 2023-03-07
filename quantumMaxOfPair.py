@@ -23,13 +23,14 @@ def find_the_largest_number(number_1: int, number_2: int) -> int:
 
     qc = QuantumCircuit(QuantumRegister(0),ClassicalRegister(1,'c'))                # creating our circuit and adding a classical register to store the result of the measurement
 
-    i = 0                                                                           # extra variable for labeling; also useful to distinguish between the first and latter cases
+    i = 0                                                                           # extra variable for labeling
+                                                                                    # also useful to distinguish between the first and latter cases
     for x in bits[::-1]:
         qc.add_register(QuantumRegister(1,'a_' + str(i)))                           # setting up a quantum registers for each bit of number_1
         qc.initialize([1 - x[0], x[0]], 3 * i)                                      # storing the bit in the qubit
 
         qc.add_register(QuantumRegister(1,'b_' + str(i)))                           # setting up a quantum registers for each bit of number_2
-        qc.initialize([1 - x[1], x[1]], 3 * i + 1)                                  # storing the bit in the qubit
+        qc.initialize([1 - x[1], x[1]], 3 * i + 1)                                  # storing the bit in the qubit: i |-> |i>
 
         qc.add_register(QuantumRegister(1,'extra_' + str(i)))                       # extra quantum register to store computational results
         qc.initialize([1, 0], 3 * i + 2)                                            # initialized to |0>
@@ -61,6 +62,7 @@ def find_the_largest_number(number_1: int, number_2: int) -> int:
     qc.measure(2, 0)                                                                # the state on register 2 is |1> exactly if number_1 < number_2, and |0> otherwise
 
     simulator = QasmSimulator()                                                     # starting the simulator
+
     shot_number = 1                                                                 # since the initialization and the gates are 'idealized' (without error),
                                                                                     # AND the measured register always ends up in either |0> or |1>, a single shot is enough.
                                                                                     # in more realistic scenarios, this number should be higher (depending on the architecture)
@@ -75,16 +77,7 @@ def find_the_largest_number(number_1: int, number_2: int) -> int:
 
     print(qc.draw())                                                                # printing the circuit
 
-    if ('0' in counts):                                                             # Recall: the state on register 2 is |1> exactly if number_1 < number_2, and |0> otherwise; with probability 1
+    if ('0' in counts):                                                             # recall: the state on register 2 is |1> exactly if number_1 < number_2, and |0> otherwise; with probability 1
         return number_1
     else:
         return number_2
-
-
-
-number_1 = 3
-number_2 = - 5
-
-print()
-print(" max(" + str(number_1) + "," + str(number_2) + ") =",find_the_largest_number(number_1, number_2))
-print()
